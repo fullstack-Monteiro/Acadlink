@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    @apply font-sans bg-neutral-50 text-neutral-900 antialiased;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  .dark body {
+    background-color: #0d0d0d;
+    color: #e4e6ea;
+  }
+  
+  /* Facebook Dark Mode Colors */
+  .dark {
+    --fb-bg-primary: #18191a;
+    --fb-bg-secondary: #242526;
+    --fb-bg-tertiary: #3a3b3c;
+    --fb-text-primary: #e4e6ea;
+    --fb-text-secondary: #b0b3b8;
+    --fb-text-tertiary: #8a8d91;
+    --fb-border: #3a3b3c;
+    --fb-hover: #404142;
+  }
+  /* Prevent text zoom on input focus on iOS */
+  input, select, textarea {
+    font-size: 16px;
+  }
+  @media (min-width: 640px) {
+    input, select, textarea { font-size: inherit; }
+  }
+}
+
+@layer components {
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  /* Safe area for notch/home bar */
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+}
