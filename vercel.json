@@ -1,0 +1,14 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "env": {
+    "VITE_API_URL": "@vite-api-url"
+  },
+  "routes": [
+    {
+      "src": "/(?!.*\\.(js|css|png|jpg|jpeg|svg|ico|webp|gif|eot|otf|ttf|woff|woff2|webmanifest|json)$).*",
+      "dest": "/index.html"
+    }
+  ]
+}
