@@ -77,7 +77,7 @@ function ExampleReelUploadComponent() {
       {/* Video Preview */}
       {videoPreview && (
         <div>
-          <video src={videoPreview} controls style={{ maxWidth: '300px' }} />
+          <video src={videoPreview} controls controlsList="nodownload" disablePictureInPicture disableRemotePlayback onContextMenu={(e) => e.preventDefault()} style={{ maxWidth: '300px' }} />
           <button onClick={removeVideo}>Remove Video</button>
         </div>
       )}

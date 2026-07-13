@@ -573,6 +573,10 @@ export default function ReelUpload({ onClose, onSuccess }) {
                 <video
                   src={videoPreview}
                   controls
+                  controlsList="nodownload"
+                  disablePictureInPicture
+                  disableRemotePlayback
+                  onContextMenu={(e) => e.preventDefault()}
                   className="w-full h-full object-contain"
                   playsInline
                 />

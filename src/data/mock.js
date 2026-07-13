@@ -326,6 +326,7 @@ export const STORIES = [
     seen: false,
     emoji: '🎓',
     text: 'Defesa hoje!',
+    category: 'Vida Académica',
     image: 'https://www.isutc.ac.mz/wp-content/uploads/2023/10/1D4A0864-scaled.jpg'
   },
   {
@@ -334,6 +335,7 @@ export const STORIES = [
     seen: false,
     emoji: '💼',
     text: 'Estágio Vodacom',
+    category: 'Carreira',
     image: 'https://jornal.uem.mz/wp-content/uploads/2023/10/Estudante-da-UEM-conquista-3%C2%B0-lugar-do-concurso-Ponte-Chinesa.jpg'
   },
   {
@@ -342,6 +344,7 @@ export const STORIES = [
     seen: true,
     emoji: '📚',
     text: 'Apontamentos',
+    category: 'Vida Académica',
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5ShmPhiEK3b7XdyHpvL6jUQF52iU5WBkzNg&s'
   },
   {
@@ -350,6 +353,7 @@ export const STORIES = [
     seen: true,
     emoji: '✨',
     text: 'Dica do dia',
+    category: 'Dicas',
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSVq3PGBcuuQPxiOCa5dS7QS20bxr-pXlChg&s'
   },
   {
@@ -358,6 +362,7 @@ export const STORIES = [
     seen: false,
     emoji: '🌍',
     text: 'Conferência',
+    category: 'Eventos',
     image: 'https://images.pexels.com/photos/1239298/pexels-photo-1239298.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260'
   },
 ]

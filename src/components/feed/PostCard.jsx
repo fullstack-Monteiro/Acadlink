@@ -97,7 +97,7 @@ function CommentLikeButton({ count }) {
   const toggle = () => { setLiked(l => !l); setN(v => liked ? v - 1 : v + 1) }
   return (
     <button onClick={toggle} className={`text-xs font-semibold transition-colors ${liked ? 'text-primary-600' : 'text-neutral-400 dark:text-[#b0b3b8] hover:text-neutral-600 dark:hover:text-neutral-300'}`}>
-      {liked ? '👍' : 'Like'}{n > 0 ? ` · ${n}` : ''}
+      {liked ? '👍' : 'Gosto'}{n > 0 ? ` · ${n}` : ''}
     </button>
   )
 }
@@ -140,7 +140,7 @@ function CommentsModal({ post, onClose }) {
   }, [])
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center animate-fade-in" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-end justify-center animate-fade-in" onClick={onClose}>
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
 
@@ -314,9 +314,11 @@ function ShareModal({ post, onClose, onShare }) {
   )
 }
 
-function PostContent({ content }) {
+function PostContent({ content, collapsedLines = 2 }) {
   const [expanded, setExpanded] = useState(false)
-  const isLong = content.split('\n').length > 2 || content.length > 120
+  const isMediaPreview = collapsedLines === 1
+  const minLength = isMediaPreview ? 80 : 120
+  const isLong = content.split('\n').length > collapsedLines || content.length > minLength
 
   if (!isLong) {
     return (
@@ -326,17 +328,37 @@ function PostContent({ content }) {
     )
   }
 
+  if (isMediaPreview && !expanded) {
+    return (
+      <div className="mb-3">
+        <div className="flex items-center gap-1 text-sm text-neutral-800 dark:text-neutral-200 leading-relaxed">
+          <span className="min-w-0 overflow-hidden whitespace-nowrap">
+            <MentionText text={content} />
+          </span>
+          <button
+            onClick={() => setExpanded(true)}
+            className="text-primary-600 hover:text-primary-700 font-semibold transition-colors focus:outline-none"
+          >
+            ...
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="mb-3">
-      <p className={`text-sm text-neutral-800 dark:text-neutral-200 leading-relaxed whitespace-pre-line ${!expanded ? 'line-clamp-2' : ''}`}>
+      <p className={`text-sm text-neutral-800 dark:text-neutral-200 leading-relaxed whitespace-pre-line ${!expanded && !isMediaPreview ? `line-clamp-${collapsedLines}` : ''}`}>
         <MentionText text={content} />
       </p>
-      <button
-        onClick={() => setExpanded(e => !e)}
-        className="text-xs font-semibold text-neutral-500 dark:text-[#e4e6ea] hover:text-primary-600 dark:hover:text-primary-400 transition-colors mt-0.5"
-      >
-        {expanded ? 'ver menos' : 'ver mais'}
-      </button>
+      {(expanded || !isMediaPreview) && (
+        <button
+          onClick={() => setExpanded(e => !e)}
+          className={`text-xs font-semibold text-neutral-500 dark:text-[#e4e6ea] hover:text-primary-600 dark:hover:text-primary-400 transition-colors mt-0.5`}
+        >
+          {expanded ? 'ver menos' : 'ver mais'}
+        </button>
+      )}
     </div>
   )
 }
@@ -533,29 +555,34 @@ export default function PostCard({ post, onSaveToggle }) {
         </div>
 
         {/* Content */}
-        <PostContent content={post.content} />
+        <PostContent
+          content={post.content}
+          collapsedLines={post.video || post.image ? 1 : 2}
+        />
 
         {post.video ? (
-          <div className="mb-3 -mx-4 overflow-hidden rounded-3xl bg-black">
+          <div className="mb-3 -mx-4 overflow-hidden rounded-[10px] bg-black aspect-video">
             <video
               controls
+              controlsList="nodownload"
+              disablePictureInPicture
+              disableRemotePlayback
+              onContextMenu={(e) => e.preventDefault()}
               src={post.video}
               poster={post.videoPoster || post.image || ''}
-              className="w-full object-cover max-h-[32rem]"
+              className="w-full h-full object-cover"
             />
           </div>
         ) : post.image ? (
-          <div className="mb-3 -mx-4 overflow-hidden rounded-3xl">
+          <div className="mb-3 -mx-4 overflow-hidden rounded-[10px] bg-black aspect-video">
             <img
               src={post.image}
               alt=""
-              className="w-full object-cover max-h-80 sm:max-h-96"
+              className="w-full h-full object-cover"
               loading="lazy"
             />
           </div>
         ) : null}
-
-        {/* Resumo de reações — estilo Facebook */}
         {(() => {
           const reactions = post.reactions || {}
           const total = Object.values(reactions).reduce((a, b) => a + b, 0)

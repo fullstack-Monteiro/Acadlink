@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 
-const DEFAULT_AVATAR_COLOR = 'bg-emerald-500'
+const DEFAULT_AVATAR_COLOR = 'bg-secondary-600'
 
 function getColor(name = '') {
   return DEFAULT_AVATAR_COLOR
@@ -22,7 +22,7 @@ export default function UserAvatar({ name, src, size = 'md', className, online }
   return (
     <div className={clsx('relative flex-shrink-0', className)}>
       <div className={clsx(
-        'rounded-full flex items-center justify-center font-semibold overflow-hidden text-neutral-900 dark:text-white',
+        'rounded-full flex items-center justify-center font-semibold overflow-hidden text-white',
         sizes[size],
         !src && getColor(name)
       )}>

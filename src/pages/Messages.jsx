@@ -160,6 +160,124 @@ export default function Messages() {
 
   const pinnedList = activeConv?.messages?.filter(m => pinnedMsgs.includes(m.id)) ?? []
 
+  // Componente interno para cada bolha de mensagem (suporta arrastar para a direita para responder)
+  const MessageBubble = ({ msg, idx }) => {
+    const isMe = msg.from === user.id
+    const prevMsg = filteredMessages[idx - 1]
+    const nextMsg = filteredMessages[idx + 1]
+    const sameAsPrev = prevMsg?.from === msg.from
+    const sameAsNext = nextMsg?.from === msg.from
+    const isLiked = likedMsgs.includes(msg.id)
+    const isPinned = pinnedMsgs.includes(msg.id)
+    const isHighlighted = chatSearch && msg.text.toLowerCase().includes(chatSearch.toLowerCase())
+
+    const startX = useRef(0)
+    const [translate, setTranslate] = useState(0)
+    const dragging = useRef(false)
+
+    const handlePointerDown = (e) => {
+      // só escuta left/touch
+      startX.current = e.clientX || (e.touches && e.touches[0].clientX) || 0
+      dragging.current = true
+      e.target.setPointerCapture?.(e.pointerId)
+    }
+
+    const handlePointerMove = (e) => {
+      if (!dragging.current) return
+      const x = e.clientX || (e.touches && e.touches[0].clientX) || 0
+      const dx = x - startX.current
+      if (dx > 0) {
+        // arrastar para a direita
+        setTranslate(Math.min(dx, 140))
+      } else {
+        setTranslate(0)
+      }
+    }
+
+    const handlePointerUp = (e) => {
+      dragging.current = false
+      // se arrastou o suficiente, responder
+      if (translate > 80) {
+        setReplyTo({ id: msg.id, text: msg.text, fromName: msg.fromName || (isMe ? 'Tu' : activeConv.user?.name) })
+        // pequeno feedback visual
+        setToast('A responder: ' + (msg.text.length > 30 ? msg.text.slice(0, 30) + '…' : msg.text))
+      }
+      // anima retorno
+      setTranslate(0)
+      e.target.releasePointerCapture?.(e.pointerId)
+    }
+
+    return (
+      <div className={`flex items-end gap-2 group ${isMe ? 'justify-end' : 'justify-start'} ${sameAsPrev ? 'mt-0.5' : 'mt-3'}`}>
+        {!isMe && (
+          <div className="w-7 flex-shrink-0 self-end mb-1">
+            {!sameAsNext && <UserAvatar name={activeConv.isGroup ? (msg.fromName || '?') : activeConv.user.name} size="xs" />}
+          </div>
+        )}
+
+        <div className={`flex flex-col ${isMe ? 'items-end' : 'items-start'} max-w-[70%]`}>
+          {!isMe && activeConv.isGroup && !sameAsPrev && (
+            <span className="text-xs text-neutral-500 dark:text-[#b0b3b8] mb-1 ml-1">{msg.fromName}</span>
+          )}
+
+          {/* Reply preview */}
+          {msg.replyTo && (
+            <div className={`text-xs px-3 py-1.5 rounded-xl mb-1 border-l-2 border-primary-400 bg-neutral-100 dark:bg-[#2a2a2a] text-neutral-500 dark:text-[#b0b3b8] max-w-full truncate`}>
+              <span className="font-medium text-primary-600">{msg.replyTo.fromName}</span>: {msg.replyTo.text}
+            </div>
+          )}
+
+          <div className="relative group/bubble"
+            onContextMenu={e => openContextMenu(e, msg)}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerCancel={() => { dragging.current = false; setTranslate(0) }}
+          >
+            {/* indicador de 'arrastar para responder' */}
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 w-10 h-10 flex items-center justify-center opacity-0 transition-opacity"
+              style={{ opacity: translate > 10 ? 1 : 0 }}>
+              <Reply className="w-5 h-5 text-primary-500" />
+            </div>
+
+            <div className={clsx(
+              'px-4 py-2.5 text-sm leading-relaxed break-words cursor-pointer',
+              isMe ? 'bg-primary-600 text-white' : 'bg-neutral-100 dark:bg-[#222222] text-neutral-900 dark:text-neutral-100',
+              isHighlighted && 'ring-2 ring-amber-400',
+              isPinned && 'ring-1 ring-amber-300',
+              isMe ? [
+                'rounded-3xl',
+                sameAsNext ? 'rounded-br-lg' : 'rounded-br-3xl',
+                sameAsPrev ? 'rounded-tr-lg' : 'rounded-tr-3xl',
+              ] : [
+                'rounded-3xl',
+                sameAsNext ? 'rounded-bl-lg' : 'rounded-bl-3xl',
+                sameAsPrev ? 'rounded-tl-lg' : 'rounded-tl-3xl',
+              ]
+            )} style={{ transform: `translateX(${translate}px)`, transition: dragging.current ? 'none' : 'transform 180ms ease' }}>
+              {msg.text}
+            </div>
+
+            {/* Acções rápidas no hover */}
+            <div className={clsx(
+              'absolute top-1/2 -translate-y-1/2 flex items-center gap-1 opacity-0 group-hover/bubble:opacity-100 transition-opacity',
+              isMe ? '-left-20' : '-right-20'
+            )}>
+              <button onClick={() => setReplyTo(msg)} className="p-1.5 rounded-full bg-white dark:bg-[#2a2a2a] shadow text-neutral-500 dark:text-[#e4e6ea] hover:text-primary-600 transition-colors">
+                <Reply className="w-3.5 h-3.5" />
+              </button>
+              <button onClick={() => toggleLike(msg.id)} className="p-1.5 rounded-full bg-white dark:bg-[#2a2a2a] shadow text-neutral-500 dark:text-[#e4e6ea] hover:text-red-500 transition-colors">
+                <Heart className={`w-3.5 h-3.5 ${isLiked ? 'fill-red-500 text-red-500' : ''}`} />
+              </button>
+            </div>
+          </div>
+
+          {!sameAsNext && <span className="text-xs text-neutral-400 mt-1 px-1">{msg.time}</span>}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-[#000000]">
       <div className="flex flex-col h-screen">
@@ -439,75 +557,9 @@ export default function Messages() {
 
               {/* Mensagens */}
               <div className="flex-1 overflow-y-auto px-4 py-4 space-y-1 min-h-0 pb-20 md:pb-4" onClick={() => setContextMenu(null)}>
-                {filteredMessages.map((msg, idx) => {
-                  const isMe = msg.from === user.id
-                  const prevMsg = filteredMessages[idx - 1]
-                  const nextMsg = filteredMessages[idx + 1]
-                  const sameAsPrev = prevMsg?.from === msg.from
-                  const sameAsNext = nextMsg?.from === msg.from
-                  const isLiked = likedMsgs.includes(msg.id)
-                  const isPinned = pinnedMsgs.includes(msg.id)
-                  const isHighlighted = chatSearch && msg.text.toLowerCase().includes(chatSearch.toLowerCase())
-
-                  return (
-                    <div key={msg.id}
-                      className={`flex items-end gap-2 group ${isMe ? 'justify-end' : 'justify-start'} ${sameAsPrev ? 'mt-0.5' : 'mt-3'}`}>
-                      {!isMe && (
-                        <div className="w-7 flex-shrink-0 self-end mb-1">
-                          {!sameAsNext && <UserAvatar name={activeConv.isGroup ? (msg.fromName || '?') : activeConv.user.name} size="xs" />}
-                        </div>
-                      )}
-
-                      <div className={`flex flex-col ${isMe ? 'items-end' : 'items-start'} max-w-[70%]`}>
-                        {!isMe && activeConv.isGroup && !sameAsPrev && (
-                          <span className="text-xs text-neutral-500 dark:text-[#b0b3b8] mb-1 ml-1">{msg.fromName}</span>
-                        )}
-
-                        {/* Reply preview */}
-                        {msg.replyTo && (
-                          <div className={`text-xs px-3 py-1.5 rounded-xl mb-1 border-l-2 border-primary-400 bg-neutral-100 dark:bg-[#2a2a2a] text-neutral-500 dark:text-[#b0b3b8] max-w-full truncate`}>
-                            <span className="font-medium text-primary-600">{msg.replyTo.fromName}</span>: {msg.replyTo.text}
-                          </div>
-                        )}
-
-                        <div className="relative group/bubble" onContextMenu={e => openContextMenu(e, msg)}>
-                          <div className={clsx(
-                            'px-4 py-2.5 text-sm leading-relaxed break-words cursor-pointer',
-                            isMe ? 'bg-primary-600 text-white' : 'bg-neutral-100 dark:bg-[#222222] text-neutral-900 dark:text-neutral-100',
-                            isHighlighted && 'ring-2 ring-amber-400',
-                            isPinned && 'ring-1 ring-amber-300',
-                            isMe ? [
-                              'rounded-3xl',
-                              sameAsNext ? 'rounded-br-lg' : 'rounded-br-3xl',
-                              sameAsPrev ? 'rounded-tr-lg' : 'rounded-tr-3xl',
-                            ] : [
-                              'rounded-3xl',
-                              sameAsNext ? 'rounded-bl-lg' : 'rounded-bl-3xl',
-                              sameAsPrev ? 'rounded-tl-lg' : 'rounded-tl-3xl',
-                            ]
-                          )}>
-                            {msg.text}
-                          </div>
-
-                          {/* Acções rápidas no hover */}
-                          <div className={clsx(
-                            'absolute top-1/2 -translate-y-1/2 flex items-center gap-1 opacity-0 group-hover/bubble:opacity-100 transition-opacity',
-                            isMe ? '-left-20' : '-right-20'
-                          )}>
-                            <button onClick={() => setReplyTo(msg)} className="p-1.5 rounded-full bg-white dark:bg-[#2a2a2a] shadow text-neutral-500 dark:text-[#e4e6ea] hover:text-primary-600 transition-colors">
-                              <Reply className="w-3.5 h-3.5" />
-                            </button>
-                            <button onClick={() => toggleLike(msg.id)} className="p-1.5 rounded-full bg-white dark:bg-[#2a2a2a] shadow text-neutral-500 dark:text-[#e4e6ea] hover:text-red-500 transition-colors">
-                              <Heart className={`w-3.5 h-3.5 ${isLiked ? 'fill-red-500 text-red-500' : ''}`} />
-                            </button>
-                          </div>
-                        </div>
-
-                        {!sameAsNext && <span className="text-xs text-neutral-400 mt-1 px-1">{msg.time}</span>}
-                      </div>
-                    </div>
-                  )
-                })}
+                {filteredMessages.map((msg, idx) => (
+                  <MessageBubble key={msg.id} msg={msg} idx={idx} />
+                ))}
 
                 {showTyping && (
                   <div className="flex items-end gap-2 mt-3 animate-fade-in">

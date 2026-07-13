@@ -187,38 +187,6 @@ export default function ReelPlayer({
           
           {/* Informações (Esquerda) */}
           <div className="flex-1 min-w-0 flex flex-col gap-2 pb-3">
-            {/* Creator Info Row - Avatar + Name + Follow Button */}
-            <div className="flex items-center gap-3">
-              {creator?.name && (
-                <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white flex-shrink-0 shadow-lg bg-secondary-500 flex items-center justify-center">
-                  {creator.avatar ? (
-                    <img 
-                      src={creator.avatar} 
-                      alt={creator.name}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <span className="text-white text-xs font-bold">
-                      {creator.name?.split(' ').map(n => n[0]).join('').slice(0, 2) || 'U'}
-                    </span>
-                  )}
-                </div>
-              )}
-              <span className="text-white text-base font-semibold truncate flex-1">
-                {creator?.name || 'Criador'}
-              </span>
-              <button
-                onClick={() => onFollowClick?.(creator)}
-                className={`px-4 py-2 rounded-full text-white text-sm whitespace-nowrap font-semibold flex-shrink-0 transition-all ${
-                  followingStates[creator?.id || creator?.username || '']
-                    ? 'bg-white/10 border border-white/50 hover:bg-white/20'
-                    : 'bg-secondary-500 border border-secondary-600 hover:bg-secondary-600'
-                }`}
-              >
-                {followingStates[creator?.id || creator?.username || ''] ? 'Seguindo' : 'Seguir'}
-              </button>
-            </div>
-
             {/* Description + Hashtags */}
             <ReelOverlay
               reel={reel}
@@ -241,6 +209,8 @@ export default function ReelPlayer({
             />
           </div>
         </div>
+
+        {/* Creator overlay removed for photo/video posts (profile bubble hidden) */}
       </div>
 
       {/* Mensagem caso a imagem não carregue */}

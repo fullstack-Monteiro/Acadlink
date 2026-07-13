@@ -26,6 +26,7 @@ import ReelFeed from './pages/ReelFeed'
 import ReelSearch from './pages/ReelSearch'
 import ReelTrending from './pages/ReelTrending'
 import ReelAnalytics from './pages/ReelAnalytics'
+import CreateStory from './pages/CreateStory'
 import BottomNav from './components/layout/BottomNav'
 
 function PrivateRoute({ children }) {
@@ -86,6 +87,7 @@ function AppRoutes() {
         <Route path="/reels/search" element={<PrivateRoute><ReelSearch /></PrivateRoute>} />
         <Route path="/reels/trending" element={<PrivateRoute><ReelTrending /></PrivateRoute>} />
         <Route path="/reels/analytics/:reelId" element={<PrivateRoute><ReelAnalytics /></PrivateRoute>} />
+        <Route path="/create-story" element={<PrivateRoute><CreateStory /></PrivateRoute>} />
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
