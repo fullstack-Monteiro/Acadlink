@@ -171,7 +171,7 @@ Veja documentação completa em `API_ENDPOINTS_COMPLETE.md`
 ### Frontend (.env)
 ```
 VITE_API_URL=http://localhost:8000
-VITE_APP_NAME=AcadLink
+VITE_APP_NAME=AcadLink  
 ```
 
 ### Backend (.env)
