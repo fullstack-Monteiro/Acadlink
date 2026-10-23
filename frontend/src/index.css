@@ -1,0 +1,189 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  /* ── Tokens de cor AcadLink ── */
+  :root {
+    /* Marca */
+    --brand-blue:  #1D6AFF;
+    --brand-cyan:  #00A3FF;
+
+    /* Light mode */
+    --bg:          #f0f2f5;   /* fundo — contraste claro face aos cards */
+    --bg-card:     #ffffff;   /* cards e painéis */
+    --bg-hover:    #e8eaed;   /* hover suave */
+    --bg-input:    #f0f2f5;   /* inputs */
+    --border:      #dde1e7;   /* divisores */
+    --text-1:      #111827;   /* títulos */
+    --text-2:      #4b5563;   /* texto secundário */
+    --text-3:      #9ca3af;   /* texto muted */
+  }
+
+  /* Dark mode — cinzas neutros com hierarquia clara entre camadas */
+  .dark {
+    --bg:          #141414;   /* fundo raiz */
+    --bg-card:     #1e1e1e;   /* cards e painéis */
+    --bg-hover:    #282828;   /* hover suave */
+    --bg-input:    #282828;   /* inputs */
+    --border:      #333333;   /* divisores */
+    --text-1:      #f5f5f7;   /* títulos */
+    --text-2:      #aeaeb2;   /* texto secundário */
+    --text-3:      #636366;   /* texto muted */
+  }
+
+  body {
+    @apply font-sans antialiased;
+    background-color: var(--bg);
+    color: var(--text-1);
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  input, select, textarea { font-size: 16px; }
+  @media (min-width: 640px) {
+    input, select, textarea { font-size: inherit; }
+  }
+}
+
+@layer components {
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+  /* Card base — usa os tokens acima */
+  .dk-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+  }
+
+  /* Botão primário */
+  .btn-brand {
+    background: #1D6AFF;
+    @apply text-white font-semibold rounded-xl px-6 py-3 transition-all duration-200;
+    box-shadow: 0 2px 12px rgba(29, 106, 255, 0.30);
+  }
+  .btn-brand:hover {
+    background: #1558e0;
+    box-shadow: 0 4px 20px rgba(29, 106, 255, 0.45);
+    transform: translateY(-1px);
+  }
+
+  .text-logo-dark { color: #0D1B3E; }
+  .text-logo-blue { color: #1D6AFF; }
+}
+
+/* ── Shimmer skeleton ── */
+@layer utilities {
+  .animate-shimmer {
+    background-image: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+    background-size: 600px 100%;
+    background-repeat: no-repeat;
+    animation: shimmer 1.6s ease-in-out infinite;
+  }
+  .dark .animate-shimmer {
+    background-image: linear-gradient(90deg, #282828 25%, #333333 50%, #282828 75%);
+  }
+}
+
+/* ── Animação de slide-up para painel de comentários ── */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Animação de scale-up para modais ── */
+@keyframes scale-up {
+  from {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-scale-up {
+  animation: scale-up 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Animação de fade-in para backdrops ── */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out;
+}
+
+/* ── Animação de toast ── */
+@keyframes toast-in {
+  from {
+    transform: translate(-50%, -20px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+.animate-toast-in {
+  animation: toast-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Animações para telas de chamada ── */
+@keyframes scale-in {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Safe area para telas de chamada */
+.safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   UTILITY CLASSES - Scrollbar
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Hide scrollbar but keep functionality */
+.hide-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/Opera */
+}

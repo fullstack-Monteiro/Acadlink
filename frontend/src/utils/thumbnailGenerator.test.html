@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thumbnail Generator Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+    .test-section {
+      margin: 20px 0;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+    .result {
+      margin-top: 20px;
+    }
+    .thumbnail {
+      max-width: 400px;
+      border: 2px solid #3B82F6;
+      border-radius: 8px;
+    }
+    .error {
+      color: #EF4444;
+      padding: 10px;
+      background: #FEE2E2;
+      border-radius: 4px;
+    }
+    .success {
+      color: #10B981;
+      padding: 10px;
+      background: #D1FAE5;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #3B82F6;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #2563EB;
+    }
+    input[type="file"] {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Thumbnail Generator Test</h1>
+  
+  <div class="test-section">
+    <h2>Test 1: Generate Thumbnail (Data URL)</h2>
+    <input type="file" id="videoInput1" accept="video/mp4,video/quicktime,video/webm">
+    <button onclick="testDataURL()">Generate Thumbnail</button>
+    <div id="result1" class="result"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>Test 2: Generate Thumbnail (Blob)</h2>
+    <input type="file" id="videoInput2" accept="video/mp4,video/quicktime,video/webm">
+    <button onclick="testBlob()">Generate Thumbnail</button>
+    <div id="result2" class="result"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>Test 3: Error Handling (Invalid File)</h2>
+    <button onclick="testInvalidFile()">Test Invalid File</button>
+    <div id="result3" class="result"></div>
+  </div>
+
+  <div class="test-section">
+    <h2>Test 4: Browser Support Check</h2>
+    <button onclick="testSupport()">Check Support</button>
+    <div id="result4" class="result"></div>
+  </div>
+
+  <script type="module">
+    import { 
+      generateThumbnail, 
+      generateThumbnailDataURL, 
+      generateThumbnailBlob,
+      isThumbnailGenerationSupported 
+    } from './thumbnailGenerator.js'
+
+    window.testDataURL = async function() {
+      const input = document.getElementById('videoInput1')
+      const result = document.getElementById('result1')
+      
+      if (!input.files || !input.files[0]) {
+        result.innerHTML = '<div class="error">Please select a video file</div>'
+        return
+      }
+
+      try {
+        result.innerHTML = '<div>Generating thumbnail...</div>'
+        const dataURL = await generateThumbnailDataURL(input.files[0])
+        result.innerHTML = `
+          <div class="success">Thumbnail generated successfully!</div>
+          <img src="${dataURL}" class="thumbnail" alt="Thumbnail">
+        `
+      } catch (error) {
+        result.innerHTML = `<div class="error">Error: ${error.message}</div>`
+      }
+    }
+
+    window.testBlob = async function() {
+      const input = document.getElementById('videoInput2')
+      const result = document.getElementById('result2')
+      
+      if (!input.files || !input.files[0]) {
+        result.innerHTML = '<div class="error">Please select a video file</div>'
+        return
+      }
+
+      try {
+        result.innerHTML = '<div>Generating thumbnail...</div>'
+        const blob = await generateThumbnailBlob(input.files[0])
+        const url = URL.createObjectURL(blob)
+        result.innerHTML = `
+          <div class="success">Thumbnail blob generated successfully!</div>
+          <p>Blob size: ${blob.size} bytes</p>
+          <img src="${url}" class="thumbnail" alt="Thumbnail">
+        `
+      } catch (error) {
+        result.innerHTML = `<div class="error">Error: ${error.message}</div>`
+      }
+    }
+
+    window.testInvalidFile = async function() {
+      const result = document.getElementById('result3')
+      
+      try {
+        result.innerHTML = '<div>Testing with invalid input...</div>'
+        await generateThumbnail(null)
+        result.innerHTML = '<div class="error">Test failed: Should have thrown an error</div>'
+      } catch (error) {
+        result.innerHTML = `<div class="success">Error handling works correctly: ${error.message}</div>`
+      }
+    }
+
+    window.testSupport = function() {
+      const result = document.getElementById('result4')
+      const supported = isThumbnailGenerationSupported()
+      
+      if (supported) {
+        result.innerHTML = '<div class="success">✓ Thumbnail generation is supported in this browser</div>'
+      } else {
+        result.innerHTML = '<div class="error">✗ Thumbnail generation is NOT supported in this browser</div>'
+      }
+    }
+  </script>
+</body>
+</html>
