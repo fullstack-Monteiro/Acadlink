@@ -1,0 +1,109 @@
+# 🌳 Árvore Completa da Estrutura - AcadLink
+
+Gerado em: 19 de maio de 2026
+
+```
+AcadLink/
+│
+├── 📋 Documentos Raiz (NOVOS - 8 arquivos)
+│   ├── STRUCTURE.md              (Mapa da estrutura)
+│   ├── INDEX.md                  (Índice centralizado)
+│   ├── MANIFEST.md               (Catálogo de docs)
+│   ├── NAVIGATION.md             (Guia de navegação)
+│   ├── ORGANIZATION.md           (Info reorganização)
+│   ├── SYSTEM_STATUS.txt         (Status completo)
+│   └── TREE_STRUCTURE.txt        (Este arquivo)
+│
+├── 📦 acadlink/ (Frontend - Vue/Vite)
+│   ├── src/
+│   ├── public/
+│   ├── vite.config.js
+│   ├── tailwind.config.js
+│   └── package.json
+│
+├── 🔧 backend/ (Django)
+│   ├── apps/
+│   ├── config/
+│   ├── manage.py
+│   └── db.sqlite3
+│
+├── 📚 docs/ (Documentação - 81 arquivos PRESERVADOS)
+│   ├── START_HERE.md
+│   ├── QUICK_START.md
+│   ├── SYSTEM_STATUS.txt
+│   ├── APIS_IMPLEMENTED.md
+│   ├── BACKEND_STRUCTURE.txt
+│   ├── REGISTRATION_FLOW_DIAGRAM.md
+│   ├── COMPLETE_UNIVERSITIES_LIST.md
+│   ├── guides/           (Subpasta - preparada)
+│   ├── api/              (Subpasta - preparada)
+│   ├── technical/        (Subpasta - preparada)
+│   └── [75+ outros arquivos...]
+│
+├── 🚀 scripts/ (Scripts - NOVO)
+│   ├── run_setup.ps1             (Movido)
+│   ├── run_migration.ps1         (Movido)
+│   └── setup.bat                 (Movido)
+│
+├── 🐳 infrastructure/ (Docker - NOVO)
+│   ├── Dockerfile                (Movido de backend/)
+│   └── docker-compose.yml        (Movido de backend/)
+│
+├── ⚙️ config/ (Config - NOVO)
+│   └── (Preparada para configurações)
+│
+├── 🔄 .venv/                     (Ambiente Virtual)
+├── 📝 .vscode/                   (Config VS Code)
+└── 🎯 .kiro/                     (Cache/Build)
+```
+
+---
+
+## ✅ O QUE FOI FEITO
+
+### 📁 PASTAS CRIADAS
+- ✅ scripts/
+- ✅ infrastructure/
+- ✅ config/
+- ✅ docs/guides/
+- ✅ docs/api/
+- ✅ docs/technical/
+
+### 📦 ARQUIVOS MOVIDOS
+- ✅ run_setup.ps1 → scripts/
+- ✅ run_migration.ps1 → scripts/
+- ✅ setup.bat → scripts/
+- ✅ Dockerfile → infrastructure/
+- ✅ docker-compose.yml → infrastructure/
+
+### 📄 DOCUMENTOS CRIADOS
+- ✅ STRUCTURE.md (Mapa da estrutura)
+- ✅ INDEX.md (Índice centralizado)
+- ✅ MANIFEST.md (Catálogo de 81 docs)
+- ✅ NAVIGATION.md (Guia de navegação)
+- ✅ ORGANIZATION.md (Info da reorganização)
+- ✅ TREE_STRUCTURE.txt (Este arquivo)
+
+### ✅ PRESERVADO
+- ✅ Todos os 81 documentos em /docs
+- ✅ Frontend (acadlink/)
+- ✅ Backend (backend/)
+- ✅ Toda funcionalidade
+
+---
+
+## 🎯 Como Navegar
+
+**Comece aqui:**
+1. STRUCTURE.md - Entenda a estrutura
+2. INDEX.md - Veja o índice
+3. NAVIGATION.md - Guia de navegação
+
+**Para rodar:**
+- ./scripts/run_setup.ps1
+
+---
+
+**Status: ✅ ORGANIZADO COM SUCESSO**
+
+19 de maio de 2026

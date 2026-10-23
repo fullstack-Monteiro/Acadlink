@@ -1,0 +1,178 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                                                            ║
+║                  🚀 OPÇÕES DE INSTALAÇÃO - ACADLINK 🚀                    ║
+║                                                                            ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+📊 COMPARAÇÃO DE OPÇÕES
+═══════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ OPÇÃO 1: RÁPIDA (2 minutos)                                             │
+├─────────────────────────────────────────────────────────────────────────┤
+│ Tamanho:        50MB                                                    │
+│ Tempo:          2 minutos                                               │
+│ Funcionalidades:                                                        │
+│   ✅ Criar conta                                                        │
+│   ✅ Fazer login                                                        │
+│   ✅ Criar posts                                                        │
+│   ✅ Upload de reels                                                    │
+│   ✅ Seguir usuários                                                    │
+│   ✅ Like e comentários                                                 │
+│   ❌ Mensagens em tempo real                                            │
+│   ❌ Notificações em tempo real                                         │
+│   ❌ Processamento de vídeos                                            │
+│                                                                         │
+│ Ideal para: Testes rápidos, desenvolvimento inicial                    │
+│                                                                         │
+│ Como usar:                                                              │
+│   cd backend && run-quick.bat  (Windows)                               │
+│   cd backend && ./run-quick.sh (Linux/Mac)                             │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ OPÇÃO 2: COMPLETA (10 minutos)                                          │
+├─────────────────────────────────────────────────────────────────────────┤
+│ Tamanho:        500MB                                                   │
+│ Tempo:          10 minutos                                              │
+│ Funcionalidades:                                                        │
+│   ✅ Tudo da opção Rápida +                                             │
+│   ✅ Mensagens em tempo real (WebSocket)                                │
+│   ✅ Notificações em tempo real (WebSocket)                             │
+│   ✅ Processamento de vídeos (Celery)                                   │
+│   ✅ Cache avançado (Redis)                                             │
+│   ✅ Async tasks                                                        │
+│                                                                         │
+│ Ideal para: Desenvolvimento completo, deployment                       │
+│                                                                         │
+│ Como usar:                                                              │
+│   cd backend && run.bat  (Windows)                                      │
+│   cd backend && ./run.sh (Linux/Mac)                                    │
+└─────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ OPÇÃO 3: CUSTOMIZADA                                                    │
+├─────────────────────────────────────────────────────────────────────────┤
+│ Tamanho:        Variável                                                │
+│ Tempo:          Variável                                                │
+│ Funcionalidades:                                                        │
+│   ✅ Escolher quais dependências instalar                               │
+│   ✅ Combinar componentes                                               │
+│   ✅ Adicionar depois conforme necessário                               │
+│                                                                         │
+│ Ideal para: Controle total, desenvolvimento gradual                    │
+│                                                                         │
+│ Como usar:                                                              │
+│   Leia INSTALL_HEAVY.md para detalhes                                  │
+└─────────────────────────────────────────────────────────────────────────┘
+
+🎯 RECOMENDAÇÃO
+═══════════════════════════════════════════════════════════════════════════
+
+  1. Comece com OPÇÃO 1 (Rápida) - 2 minutos
+  2. Teste funcionalidades básicas
+  3. Se precisar de WebSockets/Async, atualize para OPÇÃO 2
+  4. Ou instale componentes individuais (OPÇÃO 3)
+
+📋 ARQUIVOS DE REQUIREMENTS
+═══════════════════════════════════════════════════════════════════════════
+
+  requirements/dev-minimal.txt
+  ├─ Django 4.2.11
+  ├─ Django REST Framework 3.14.0
+  ├─ Django CORS Headers 4.3.1
+  ├─ PostgreSQL Driver
+  ├─ JWT Authentication
+  ├─ Python Decouple
+  └─ Pillow (Imagens)
+  
+  Tamanho: 50MB | Tempo: 1 minuto
+
+  ─────────────────────────────────────────────────────────────────────
+
+  requirements/base.txt
+  ├─ Tudo do dev-minimal +
+  ├─ Channels (WebSockets)
+  ├─ Daphne (ASGI)
+  ├─ Celery (Async)
+  └─ Redis
+  
+  Tamanho: 150MB | Tempo: 3 minutos
+
+  ─────────────────────────────────────────────────────────────────────
+
+  requirements/heavy.txt
+  ├─ Tudo do base +
+  ├─ FFmpeg (Video)
+  ├─ OpenCV (Visão)
+  ├─ AWS S3
+  ├─ Sentry (Monitoring)
+  ├─ Testing (Pytest)
+  └─ Documentação (Swagger)
+  
+  Tamanho: 500MB | Tempo: 10 minutos
+
+🚀 COMEÇAR AGORA
+═══════════════════════════════════════════════════════════════════════════
+
+  OPÇÃO 1 (Rápida):
+  ┌─────────────────────────────────────────────────────────────────────┐
+  │ Terminal 1:                                                         │
+  │ cd backend && run-quick.bat  (Windows)                              │
+  │ cd backend && ./run-quick.sh (Linux/Mac)                            │
+  │                                                                     │
+  │ Terminal 2:                                                         │
+  │ cd acadlink && npm install && npm run dev                           │
+  │                                                                     │
+  │ Abrir: http://localhost:3000                                        │
+  └─────────────────────────────────────────────────────────────────────┘
+
+  OPÇÃO 2 (Completa):
+  ┌─────────────────────────────────────────────────────────────────────┐
+  │ Terminal 1:                                                         │
+  │ cd backend && run.bat  (Windows)                                    │
+  │ cd backend && ./run.sh (Linux/Mac)                                  │
+  │                                                                     │
+  │ Terminal 2:                                                         │
+  │ cd acadlink && npm install && npm run dev                           │
+  │                                                                     │
+  │ Abrir: http://localhost:3000                                        │
+  └─────────────────────────────────────────────────────────────────────┘
+
+📚 DOCUMENTAÇÃO
+═══════════════════════════════════════════════════════════════════════════
+
+  START.md              ← Comece aqui
+  INSTALL_GUIDE.md      ← Guia de instalação
+  QUICK_INSTALL.md      ← Instalação rápida (2 min)
+  INSTALL_HEAVY.md      ← Dependências pesadas
+  BACKEND_START.md      ← Setup backend detalhado
+  TESTING_GUIDE.md      ← Guia de testes
+  DEPLOYMENT.md         ← Guia de deployment
+
+✅ CHECKLIST
+═══════════════════════════════════════════════════════════════════════════
+
+  [ ] Python 3.9+ instalado
+  [ ] Node.js 16+ instalado
+  [ ] Escolheu opção (Rápida/Completa)
+  [ ] Executou script de instalação
+  [ ] Backend rodando em http://localhost:8000
+  [ ] Frontend rodando em http://localhost:3000
+  [ ] Criou conta com sucesso
+  [ ] Testou funcionalidades básicas
+
+🎉 PRONTO!
+═══════════════════════════════════════════════════════════════════════════
+
+  Você tem um sistema de rede social acadêmica rodando!
+
+  Próximo passo: Testar funcionalidades com TESTING_GUIDE.md
+
+═══════════════════════════════════════════════════════════════════════════
+
+Desenvolvido com ❤️ - Maio 2026
+
+AcadLink - Conectando a comunidade acadêmica 🎓
+
+═══════════════════════════════════════════════════════════════════════════
